@@ -21,7 +21,7 @@ So far, we have trained and evaluated it on two adaptation tasks: **PascalVOC �
 $ git clone https://github.com/hnuzhy/SDA-YOLO.git
 $ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-# I have only evaluated my codes on GTX3090 with CUDA11.2 and PyTorch1.10.0. You can install the same verison if needed
+# Codes are only evaluated on GTX3090+CUDA11.2+PyTorch1.10.0. You can follow the same config if needed
 # [method 1][directly install from the official website][may slow]
 $ pip3 install torch==1.10.0+cu111 torchvision==0.11.1+cu111 torchaudio==0.10.0+cu111 \
   -f https://download.pytorch.org/whl/cu111/torch_stable.html
@@ -39,7 +39,7 @@ $ pip3 install torch*.whl
 
 * **PascalVOC(2007+2012)**: Please follow the instructions in [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn#beyond-the-demo-installation-for-training-and-testing-models) to prepare VOC datasets. Or you can follow the scripts in file [VOC.yaml](./data/yamls_bak/VOC.yaml) to build VOC datasets.
 * **Clipart1k**: This datast is originally released in [cross-domain-detection](https://github.com/naoto0804/cross-domain-detection). Dataset preparation instruction is also in it [Cross Domain Detection/datasets](https://github.com/naoto0804/cross-domain-detection/tree/master/datasets).
-* **VOC-style → Clipart-style**: Images translated by CycleGAN are available in the website [dt_clipart](https://github.com/naoto0804/cross-domain-detection/tree/master/datasets#download-domain-transferred-images-for-step1-cyclegan) by running `bash prepare_dt.sh`.
+* **VOC-style → Clipart-style**: Images translated by [CycleGAN](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) are available in the website [dt_clipart](https://github.com/naoto0804/cross-domain-detection/tree/master/datasets#download-domain-transferred-images-for-step1-cyclegan) by running `bash prepare_dt.sh`.
 * **Clipart-style → VOC-style**: We trained a new image style transfer model based on [CUT(ECCV2020)](https://github.com/taesungp/contrastive-unpaired-translation). The generated 1k VOC-style images are uploaded in [google drive](https://drive.google.com/drive/folders/1Z5Wv6SV-atBNEsi_zBprlg0uVIw3EKGA?usp=sharing).
 * **VOC foramt → YOLOv5 format**: Change labels and folders placing from VOC foramt to YOLOv5 format. Follow the script [convert_voc2clipart_yolo_label.py](./data/formats/convert_voc2clipart_yolo_label.py)
 
@@ -53,7 +53,51 @@ $ pip3 install torch*.whl
 
 ## Training and Testing
 
-* yamls
+* **Yamls**
+
+We put the paths of the dataset involved in the training in the yaml file. Five kind of paths are need to be setted. Taking [pascalvoc0712_clipart1k_VOC.yaml](./data/yamls_sda/pascalvoc0712_clipart1k_VOC.yaml) as an example.
+```bash
+path: root path of datasets;
+train_source_real: subpaths of real source images with labels for training. e.g., PascalVOC(2007+2012) trainval set;
+train_source_fake: subpaths of fake source images with labels for training. e.g., PascalVOC(2007+2012) Clipart-style trainval set;
+train_target_real: subpaths of real target images without labels for training. e.g., Clipart1k train set;
+train_tatget_fake: subpaths of fake target images without labels for training. e.g., Clipart1k VOC-style train set;
+test_target_real: subpaths of real target images with labels for testing. e.g., Clipart1k test set;
+nc: number of classes;
+names: class names list.
+```
+
+* **Training**
+
+Still taking **PascalVOC → Clipart1k** as an example. The pretrained model `yolov5l.pt` can be downloaded from the official YOLOv5 website.
+```bash
+python -m torch.distributed.launch --nproc_per_node 4 sda_yolov5_train.py \
+  --weights weights/yolov5l.pt \
+  --data yamls_sda/pascalvoc0712_clipart1k_VOC.yaml \
+  --name voc2clipart_sda_960_yolov5l \
+  --img 960 --device 0,1,2,3 --batch-size 24 --epochs 100
+```
+
+If you want to resume a breakout training, following the script below.
+```bash
+python -m torch.distributed.launch --nproc_per_node 4 --master_port 12345 sda_yolov5_train.py \
+  --weights weights/yolov5l.pt \
+  --data yamls_sda/pascalvoc0712_clipart1k_VOC.yaml \
+  --name voc2clipart_sda_960_yolov5l_R \
+  --student_weight runs/train/voc2clipart_sda_960_yolov5l/weights/best_student.pt \
+  --teacher_weight runs/train/voc2clipart_sda_960_yolov5l/weights/best_teacher.pt \
+  --img 960 --device 0,1,2,3 --batch-size 24 --epochs 100
+```
+
+* **Testing**
+
+After finishing the training of **PascalVOC → Clipart1k** task.
+```bash
+python sda_yolov5_test.py --data yamls_sda/pascalvoc0712_clipart1k_VOC.yaml \
+    --weights runs/train/voc2clipart_sda_960_yolov5l/weights/best_student.pt \
+    --name voc2clipart_sda_960_yolov5l \
+    --img 960 --batch-size 4 --device 0
+```
 
 
 ## References
