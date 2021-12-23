@@ -68,11 +68,12 @@ names: class names list.
 ```
 
 * **training**
+
 Still taking **PascalVOC → Clipart1k** as an example.
 ```bash
-python -m torch.distributed.launch --nproc_per_node 4 umt_yolov5_train.py \
+python -m torch.distributed.launch --nproc_per_node 4 sda_yolov5_train.py \
   --weights weights/yolov5l.pt \
-  --data yamls_umt/pascalvoc0712_clipart1k_VOC.yaml \
+  --data yamls_sda/pascalvoc0712_clipart1k_VOC.yaml \
   --name voc2clipart_sda_960_yolov5l \
   --img 960 --device 0,1,2,3 --batch-size 24 --epochs 100
 ```
@@ -80,8 +81,13 @@ Pretrained model `yolov5l.pt` can be downloaded from the official YOLOv5 website
 
 
 * **testing**
-```bash
 
+After finishing the training of **PascalVOC → Clipart1k** task.
+```bash
+python sda_yolov5_test.py --data yamls_sda/pascalvoc0712_clipart1k_VOC.yaml \
+    --weights runs/train/voc2clipart_umt_960_yolov5l/weights/best_student.pt \
+    --name voc2clipart_sda_960_yolov5l \
+    --img 960 --batch-size 4 --device 0
 ```
 
 
