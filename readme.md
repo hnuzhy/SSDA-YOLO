@@ -18,8 +18,11 @@ So far, we have trained and evaluated it on two adaptation tasks: **PascalVOC �
 
 * **Environment**
 
+Anaconda, Python3.8, PyTorch1.10.0, Wandb
+
 ```
-git clone 
+git clone https://github.com/hnuzhy/SDA-YOLO.git
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ## Dataset Preparing
@@ -29,7 +32,7 @@ git clone
 
 ## References
 
-* [[YOLOv5 🚀 in PyTorch > ONNX > CoreML > TFLite](https://github.com/ultralytics/yolov5)]
-* [[UMT(A Pytorch Implementation of Unbiased Mean Teacher for Cross-domain Object Detection (CVPR 2021))](https://github.com/kinredon/umt)]
+* [YOLOv5 🚀 in PyTorch > ONNX > CoreML > TFLite](https://github.com/ultralytics/yolov5)
+* [UMT(A Pytorch Implementation of Unbiased Mean Teacher for Cross-domain Object Detection (CVPR 2021))](https://github.com/kinredon/umt)
 
 
