@@ -41,11 +41,13 @@ $ pip3 install torch*.whl
 * **Clipart1k**: This datast is originally released in [cross-domain-detection](https://github.com/naoto0804/cross-domain-detection). Dataset preparation instruction is also in it [Cross Domain Detection/datasets](https://github.com/naoto0804/cross-domain-detection/tree/master/datasets).
 * **VOC-style → Clipart-style**: Images translated by CycleGAN are available in the website [dt_clipart](https://github.com/naoto0804/cross-domain-detection/tree/master/datasets#download-domain-transferred-images-for-step1-cyclegan) by running `bash prepare_dt.sh`.
 * **Clipart-style → VOC-style**: We trained a new image style transfer model based on [CUT(ECCV2020)](https://github.com/taesungp/contrastive-unpaired-translation). The generated 1k VOC-style images are uploaded in [google drive]().
+* **VOC foramt → YOLOv5 format**: Change labels and folders placing from VOC foramt to YOLOv5 format. Follow the script [convert_voc2clipart_yolo_label.py](./data/formats/convert_voc2clipart_yolo_label.py)
 
 **CityScapes → CityScapes Foggy**
 
 * **CityScapes**: Download from the official [website](https://www.cityscapes-dataset.com/downloads/). Images ***leftImg8bit_trainvaltest.zip (11GB) [md5]***; Annotations ***gtFine_trainvaltest.zip (241MB) [md5]***.
 * **CityScapes Foggy**: Download from the official [website](https://www.cityscapes-dataset.com/downloads/). Images ***leftImg8bit_trainval_foggyDBF.zip (20GB) [md5]***; Annotations are the same with `CityScapes`. Note, we choosed foggy images with `beta=0.02` out of three kinds (0.01, 0.02, 0.005).
+* **VOC foramt → YOLOv5 format**: Follow the script [convert_CitySpaces_yolo_label.py](./data/formats/convert_CitySpaces_yolo_label.py) and [convert_CitySpacesFoggy_yolo_label.py](./data/formats/convert_CitySpacesFoggy_yolo_label.py)
 
 ## Test and Train
 
