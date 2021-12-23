@@ -22,8 +22,8 @@ So far, we have trained and evaluated it on two adaptation tasks: **PascalVOC â†
 Anaconda, Python3.8, PyTorch1.10.0, wandb
 
 ```bash
-git clone https://github.com/hnuzhy/SDA-YOLO.git
-pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+$ git clone https://github.com/hnuzhy/SDA-YOLO.git
+$ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ## Dataset Preparing
