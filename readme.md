@@ -21,7 +21,7 @@ So far, we have trained and evaluated it on two adaptation tasks: **PascalVOC â†
 $ git clone https://github.com/hnuzhy/SDA-YOLO.git
 $ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-# I have only evaluated my codes on GTX3090 with CUDA11.2 and PyTorch1.10.0. You can install the same verison if needed
+# Codes are only evaluated on GTX3090 with CUDA11.2 and PyTorch1.10.0. You can install the same verison if needed
 # [method 1][directly install from the official website][may slow]
 $ pip3 install torch==1.10.0+cu111 torchvision==0.11.1+cu111 torchaudio==0.10.0+cu111 \
   -f https://download.pytorch.org/whl/cu111/torch_stable.html
