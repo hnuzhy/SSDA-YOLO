@@ -59,10 +59,10 @@ We put the paths of the dataset involved in the training in the yaml file. Five 
 ```
 path: root path of datasets;
 train_source_real: subpaths of real source images with labels for training. e.g., PascalVOC(2007+2012) trainval set;
-train_source_fake`: subpaths of fake source images with labels for training. e.g., PascalVOC(2007+2012) Clipart-style trainval set;
-train_target_real`: subpaths of real target images without labels for training. e.g., Clipart1k train set;
-train_tatget_fake`: subpaths of fake target images without labels for training. e.g., Clipart1k VOC-style train set;
-test_target_real`: subpaths of real target images with labels for testing. e.g., Clipart1k test set;
+train_source_fake: subpaths of fake source images with labels for training. e.g., PascalVOC(2007+2012) Clipart-style trainval set;
+train_target_real: subpaths of real target images without labels for training. e.g., Clipart1k train set;
+train_tatget_fake: subpaths of fake target images without labels for training. e.g., Clipart1k VOC-style train set;
+test_target_real: subpaths of real target images with labels for testing. e.g., Clipart1k test set;
 nc: number of classes;
 names: class names list.
 ```
