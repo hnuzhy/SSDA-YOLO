@@ -79,6 +79,16 @@ python -m torch.distributed.launch --nproc_per_node 4 sda_yolov5_train.py \
 ```
 Pretrained model `yolov5l.pt` can be downloaded from the official YOLOv5 website.
 
+If you want to resume a breakout training, following the script below.
+```bash
+python -m torch.distributed.launch --nproc_per_node 4 --master_port 12345 sda_yolov5_train.py \
+  --weights weights/yolov5l.pt \
+  --data yamls_sda/pascalvoc0712_clipart1k_VOC.yaml \
+  --name voc2clipart_sda_960_yolov5l_R \
+  --student_weight runs/train/voc2clipart_sda_960_yolov5l/weights/best_student.pt \
+  --teacher_weight runs/train/voc2clipart_sda_960_yolov5l/weights/best_teacher.pt \
+  --img 960 --device 0,1,2,3 --batch-size 24 --epochs 100
+```
 
 * **Testing**
 
