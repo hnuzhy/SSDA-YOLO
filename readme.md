@@ -53,7 +53,7 @@ $ pip3 install torch*.whl
 
 ## Training and Testing
 
-* **yamls**
+* **Yamls**
 
 We put the paths of the dataset involved in the training in the yaml file. Five kind of paths are need to be setted. Taking [pascalvoc0712_clipart1k_VOC.yaml](./data/yamls_sda/pascalvoc0712_clipart1k_VOC.yaml) as an example.
 ```bash
@@ -67,7 +67,7 @@ nc: number of classes;
 names: class names list.
 ```
 
-* **training**
+* **Training**
 
 Still taking **PascalVOC → Clipart1k** as an example.
 ```bash
@@ -80,7 +80,7 @@ python -m torch.distributed.launch --nproc_per_node 4 sda_yolov5_train.py \
 Pretrained model `yolov5l.pt` can be downloaded from the official YOLOv5 website.
 
 
-* **testing**
+* **Testing**
 
 After finishing the training of **PascalVOC → Clipart1k** task.
 ```bash
