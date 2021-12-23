@@ -15,11 +15,19 @@ So far, we have trained and evaluated it on two adaptation tasks: **PascalVOC â†
 
 ## Installition
 
-**Environmen:** Anaconda, Python3.8, PyTorch1.10.0, wandb
+**Environment:** Anaconda, Python3.8, PyTorch1.10.0(CUDA11.2), wandb
 
 ```bash
 $ git clone https://github.com/hnuzhy/SDA-YOLO.git
 $ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# I have only test my codes on GTX3090 with CUDA11.2 and PyTorch1.10.0. You can install the same verison if needed
+$ pip3 install torch==1.10.0+cu111 torchvision==0.11.1+cu111 torchaudio==0.10.0+cu111 -f https://download.pytorch.org/whl/cu111/torch_stable.html
+or
+$ wget https://download.pytorch.org/whl/cu111/torch-1.10.0%2Bcu111-cp38-cp38-linux_x86_64.whl
+$ wget https://download.pytorch.org/whl/cu111/torchvision-0.11.1%2Bcu111-cp38-cp38-linux_x86_64.whl
+$ wget https://download.pytorch.org/whl/cu111/torchaudio-0.10.0%2Bcu111-cp38-cp38-linux_x86_64.whl
+$ pip3 install torch*.whl
 ```
 
 ## Dataset Preparing
