@@ -53,22 +53,22 @@ $ pip3 install torch*.whl
 
 ## Training and Testing
 
-### yamls
+* **yamls**
 
 We put the paths of the dataset involved in the training in the yaml file. Five kind of paths are need to be setted. Taking [pascalvoc0712_clipart1k_VOC.yaml](./data/yamls_sda/pascalvoc0712_clipart1k_VOC.yaml) as an example.
 
-* **path**: root path of datasets;
-* **train_source_real**: subpaths of real source images with labels for training. e.g., **PascalVOC(2007+2012)**;
-* **train_source_fake**: subpaths of fake source images with labels for training. e.g., **PascalVOC(2007+2012) Clipart-style**;
+`path`: root path of datasets;
+`train_source_real`: subpaths of real source images with labels for training. e.g., **PascalVOC(2007+2012)**;
+`train_source_fake`: subpaths of fake source images with labels for training. e.g., **PascalVOC(2007+2012) Clipart-style**;
 * **train_target_real**: subpaths of real target images without labels for training. e.g., **Clipart1k**;
 * **train_tatget_fake**: subpaths of fake target images without labels for training. e.g., **Clipart1k VOC-style*;
 * **test_target_real**: subpaths of real target images with labels for testing;
 * **nc**: number of classes;
 * **names**: class names list.
 
-### training
+* **training**
 
-### testing
+* **testing**
 
 
 ## References
