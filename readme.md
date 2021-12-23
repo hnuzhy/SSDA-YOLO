@@ -69,7 +69,7 @@ names: class names list.
 
 * **Training**
 
-Still taking **PascalVOC → Clipart1k** as an example.
+Still taking **PascalVOC → Clipart1k** as an example. The pretrained model `yolov5l.pt` can be downloaded from the official YOLOv5 website.
 ```bash
 python -m torch.distributed.launch --nproc_per_node 4 sda_yolov5_train.py \
   --weights weights/yolov5l.pt \
@@ -77,7 +77,6 @@ python -m torch.distributed.launch --nproc_per_node 4 sda_yolov5_train.py \
   --name voc2clipart_sda_960_yolov5l \
   --img 960 --device 0,1,2,3 --batch-size 24 --epochs 100
 ```
-Pretrained model `yolov5l.pt` can be downloaded from the official YOLOv5 website.
 
 If you want to resume a breakout training, following the script below.
 ```bash
