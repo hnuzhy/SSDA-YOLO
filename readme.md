@@ -47,6 +47,7 @@ $ pip3 install torch*.whl
 
 * **CityScapes**: Download from the official [website](https://www.cityscapes-dataset.com/downloads/). Images ***leftImg8bit_trainvaltest.zip (11GB) [md5]***; Annotations ***gtFine_trainvaltest.zip (241MB) [md5]***.
 * **CityScapes Foggy**: Download from the official [website](https://www.cityscapes-dataset.com/downloads/). Images ***leftImg8bit_trainval_foggyDBF.zip (20GB) [md5]***; Annotations are the same with `CityScapes`. Note, we chose foggy images with `beta=0.02` out of three kind of choices `(0.01, 0.02, 0.005)`.
+* **Normal-style → Foggy-style** and **Foggy-style → Normal-style**: We taked target domain images as fake source images and vice versa. 
 * **VOC foramt → YOLOv5 format**: Follow the script [convert_CitySpaces_yolo_label.py](./data/formats/convert_CitySpaces_yolo_label.py) and [convert_CitySpacesFoggy_yolo_label.py](./data/formats/convert_CitySpacesFoggy_yolo_label.py)
 
 ## Test and Train
