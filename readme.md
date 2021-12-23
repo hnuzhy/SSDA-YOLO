@@ -94,7 +94,7 @@ python -m torch.distributed.launch --nproc_per_node 4 --master_port 12345 sda_yo
 After finishing the training of **PascalVOC → Clipart1k** task.
 ```bash
 python sda_yolov5_test.py --data yamls_sda/pascalvoc0712_clipart1k_VOC.yaml \
-    --weights runs/train/voc2clipart_umt_960_yolov5l/weights/best_student.pt \
+    --weights runs/train/voc2clipart_sda_960_yolov5l/weights/best_student.pt \
     --name voc2clipart_sda_960_yolov5l \
     --img 960 --batch-size 4 --device 0
 ```
