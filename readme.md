@@ -35,12 +35,17 @@ $ pip3 install torch*.whl
 
 ## Dataset Preparing
 
+**PascalVOC → Clipart1k**
+
 * **PascalVOC(2007+2012)**: Please follow the instructions in [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn#beyond-the-demo-installation-for-training-and-testing-models) to prepare VOC datasets. Or you can follow the scripts in file [VOC.yaml](./data/yamls_bak/VOC.yaml) to build VOC datasets.
 * **Clipart1k**: This datast is originally released in [cross-domain-detection](https://github.com/naoto0804/cross-domain-detection). Dataset preparation instruction is also in it [Cross Domain Detection/datasets](https://github.com/naoto0804/cross-domain-detection/tree/master/datasets).
 * **VOC-style → Clipart-style**: Images translated by CycleGAN are available in the website [dt_clipart](https://github.com/naoto0804/cross-domain-detection/tree/master/datasets#download-domain-transferred-images-for-step1-cyclegan) by running `bash prepare_dt.sh`.
-* **Clipart-style → VOC-style**: We trained a new image style transfer model based on [CUT](). The generated 1k VOC-style images are in [Ondrive]()
-* **CityScapes**
-* **CityScapes Foggy**
+* **Clipart-style → VOC-style**: We trained a new image style transfer model based on [CUT(ECCV2020)](https://github.com/taesungp/contrastive-unpaired-translation). The generated 1k VOC-style images are uploaded in [google drive]().
+
+**CityScapes → CityScapes Foggy**
+
+* **CityScapes**: Download from the official [website](https://www.cityscapes-dataset.com/downloads/). Images ***leftImg8bit_trainvaltest.zip (11GB) [md5]***; Annotations ***gtFine_trainvaltest.zip (241MB) [md5]***.
+* **CityScapes Foggy**: Download from the official [website](https://www.cityscapes-dataset.com/downloads/). Images ***leftImg8bit_trainval_foggyDBF.zip (20GB) [md5]***. Annotations are the same with `CityScapes`.
 
 ## Test and Train
 
