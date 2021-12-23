@@ -56,7 +56,7 @@ $ pip3 install torch*.whl
 * **yamls**
 
 We put the paths of the dataset involved in the training in the yaml file. Five kind of paths are need to be setted. Taking [pascalvoc0712_clipart1k_VOC.yaml](./data/yamls_sda/pascalvoc0712_clipart1k_VOC.yaml) as an example.
-```
+```bash
 path: root path of datasets;
 train_source_real: subpaths of real source images with labels for training. e.g., PascalVOC(2007+2012) trainval set;
 train_source_fake: subpaths of fake source images with labels for training. e.g., PascalVOC(2007+2012) Clipart-style trainval set;
@@ -68,8 +68,21 @@ names: class names list.
 ```
 
 * **training**
+Still taking **PascalVOC → Clipart1k** as an example.
+```bash
+python -m torch.distributed.launch --nproc_per_node 4 umt_yolov5_train.py \
+  --weights weights/yolov5l.pt \
+  --data yamls_umt/pascalvoc0712_clipart1k_VOC.yaml \
+  --name voc2clipart_sda_960_yolov5l \
+  --img 960 --device 0,1,2,3 --batch-size 24 --epochs 100
+```
+Pretrained model `yolov5l.pt` can be downloaded from the official YOLOv5 website.
+
 
 * **testing**
+```bash
+
+```
 
 
 ## References
