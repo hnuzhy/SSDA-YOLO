@@ -1,0 +1,39 @@
+# PASCAL VOC dataset http://host.robots.ox.ac.uk/pascal/VOC/
+# Train command: python train.py --data VOC.yaml
+# Default dataset location is next to YOLOv5:
+#   /parent
+#     /datasets/VOC
+#     /yolov5
+
+
+# Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
+path: /datasdc/zhouhuayi/dataset/domain_adaptation/
+# real train and val images (relative to 'path') of pascalvoc0712, including 5011(2501+2510)+11540(5717+5823)=16551 images
+train_source_real: 
+  - pascalvoc/VOC2007/yolov5_format/images/train
+  - pascalvoc/VOC2007/yolov5_format/images/val
+  - pascalvoc/VOC2012/yolov5_format/images/train
+  - pascalvoc/VOC2012/yolov5_format/images/val
+# fake train and val images (relative to 'path') of pascalvoc0712, with target-like images using cycleGAN
+train_source_fake: 
+  - dt_clipart/VOC2007/yolov5_format/images/train
+  - dt_clipart/VOC2007/yolov5_format/images/val
+  - dt_clipart/VOC2012/yolov5_format/images/train
+  - dt_clipart/VOC2012/yolov5_format/images/val
+# real train images (relative to 'path') of clipart1k, including 500 images
+train_target_real: 
+  - clipart/yolov5_format/images/train
+# fake train images (relative to 'path') of clipart1k, with source-like images using cycleGAN
+train_target_fake: 
+  - clipart2voc/yolov5_format/images/train
+
+# real val images (relative to 'path') of clipart1k, including 500 images, never appear when training 
+test_target_real: 
+  - clipart/yolov5_format/images/val
+
+# Classes
+nc: 20  # number of classes
+names: [ 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog',
+         'horse', 'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor' ]  # class names
+
+
