@@ -50,7 +50,10 @@ $ pip3 install torch*.whl
 * **Normal-style → Foggy-style** and **Foggy-style → Normal-style**: We taked target domain images as fake source images and vice versa. 
 * **VOC foramt → YOLOv5 format**: Follow the script [convert_CitySpaces_yolo_label.py](./data/formats/convert_CitySpaces_yolo_label.py) and [convert_CitySpacesFoggy_yolo_label.py](./data/formats/convert_CitySpacesFoggy_yolo_label.py)
 
-## Test and Train
+
+## Training and Testing
+
+* yamls
 
 
 ## References
