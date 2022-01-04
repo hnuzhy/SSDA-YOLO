@@ -13,7 +13,7 @@ SDA-YOLO is designed for domain adaptative cross-domain object detection based o
 
 So far, we have trained and evaluated it on two adaptation tasks: **PascalVOC → Clipart1k**, **CityScapes → CityScapes Foggy**.
 
-## Installition
+## Installation
 
 **Environment:** Anaconda, Python3.8, PyTorch1.10.0(CUDA11.2), wandb
 
