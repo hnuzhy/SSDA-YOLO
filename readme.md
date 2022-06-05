@@ -104,5 +104,5 @@ python sda_yolov5_test.py --data yamls_sda/pascalvoc0712_clipart1k_VOC.yaml \
 
 * [YOLOv5 🚀 in PyTorch > ONNX > CoreML > TFLite](https://github.com/ultralytics/yolov5)
 * [UMT(A Pytorch Implementation of Unbiased Mean Teacher for Cross-domain Object Detection (CVPR 2021))](https://github.com/kinredon/umt)
-
+* [CUT - Contrastive unpaired image-to-image translation, faster and lighter training than cyclegan (ECCV 2020, in PyTorch)](https://github.com/taesungp/contrastive-unpaired-translation)
 
