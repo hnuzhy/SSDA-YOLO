@@ -1,5 +1,5 @@
-# SDA-YOLO
-Codes for my paper "SDA-YOLO: Semi-supervised Domain Adaptive YOLO for Cross-Domain Object Detection" for ICME2022
+# SSDA-YOLO
+Codes for my paper "SSDA-YOLO: Semi-supervised Domain Adaptive YOLO for Cross-Domain Object Detection" for journal SPL (under review)
 
 ## Abstarct
 
@@ -7,7 +7,7 @@ Codes for my paper "SDA-YOLO: Semi-supervised Domain Adaptive YOLO for Cross-Dom
 
 ## Brief Description
 
-SDA-YOLO is designed for domain adaptative cross-domain object detection based on the knowledge distillation framework and robust `YOLOv5`. The network architecture is as below. 
+SSDA-YOLO is designed for domain adaptative cross-domain object detection based on the knowledge distillation framework and robust `YOLOv5`. The network architecture is as below. 
 
 ![example1](./images/figure1.png)
 
