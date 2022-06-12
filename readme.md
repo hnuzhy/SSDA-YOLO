@@ -64,10 +64,10 @@ $ pip3 install torch*.whl
 <th>[target fake] Clipart2VOC</th>
 </tr>
 <tr>
-<td><img src="./images/voc-000021.jpg" height="360"></td>
-<td><img src="./images/voc2clipart-000021.jpg" height="360"></td> 
-<td><img src="./images/clipart-5515950.jpg" height="360"></td>
-<td><img src="./images/clipart2voc-5515950.jpg" height="360"></td>
+<td><img src="./images/voc-000021.jpg" height="240"></td>
+<td><img src="./images/voc2clipart-000021.jpg" height="240"></td> 
+<td><img src="./images/clipart-5515950.jpg" height="240"></td>
+<td><img src="./images/clipart2voc-5515950.jpg" height="240"></td>
 </tr>
 </table>
 
@@ -81,10 +81,10 @@ $ pip3 install torch*.whl
 <th>[target fake] CSF2CS</th>
 </tr>
 <tr>
-<td><img src="./images/cs-frankfurt_000000_000294.jpg" height="180"></td>
-<td><img src="./images/cs2csf-frankfurt_000000_000294.png" height="180"></td> 
-<td><img src="./images/csf-frankfurt_000000_000294.jpg" height="180"></td>
-<td><img src="./images/csf2cs-frankfurt_000000_000294.png" height="180"></td>
+<td><img src="./images/cs-frankfurt_000000_000294.jpg" height="120"></td>
+<td><img src="./images/cs2csf-frankfurt_000000_000294.png" height="120"></td> 
+<td><img src="./images/csf-frankfurt_000000_000294.jpg" height="120"></td>
+<td><img src="./images/csf2cs-frankfurt_000000_000294.png" height="120"></td>
 </tr>
 </table>
 
