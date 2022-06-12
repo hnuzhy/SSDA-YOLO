@@ -11,7 +11,7 @@ SSDA-YOLO is designed for domain adaptative cross-domain object detection based 
 
 ![example1](./images/figure1.png)
 
-So far, we have trained and evaluated it on two pubilc available transfer tasks: **PascalVOC→Clipart1k** and **CityScapes→CityScapes Foggy**.
+So far, we have trained and evaluated it on two pubilc available transfer tasks: **PascalVOC → Clipart1k** and **CityScapes → CityScapes Foggy**.
 
 ## Installation
 
@@ -51,6 +51,12 @@ $ pip3 install torch*.whl
 * **Foggy-style → Normal-style**: We trained a new image style transfer model based on [CUT(ECCV2020)](https://github.com/taesungp/contrastive-unpaired-translation). The generated Normal-style fake CityScapes Foggy images will be uploaded.
 * **VOC foramt → YOLOv5 format**: Follow the script [convert_CitySpaces_yolo_label.py](./data/formats/convert_CitySpaces_yolo_label.py) and [convert_CitySpacesFoggy_yolo_label.py](./data/formats/convert_CitySpacesFoggy_yolo_label.py)
 
+
+## Examples of Input Image
+
+* **PascalVOC(2007+2012)**
+
+* **CityScapes → CityScapes Foggy**
 
 ## Training and Testing
 
