@@ -55,8 +55,17 @@ $ pip3 install torch*.whl
 ## Examples of Input Image
 
 * **PascalVOC(2007+2012)**
+![example2.1](./images/voc-000021.jpg)
+![example2.2](./images/voc2clipart-000021.jpg)
+![example2.3](./images/clipart-5515950.jpg)
+![example2.4](./images/clipart2voc-5515950.jpg)
 
 * **CityScapes → CityScapes Foggy**
+![example3.1](./images/cs-frankfurt_000000_000294.jpg)
+![example3.2](./images/cs2csf-frankfurt_000000_000294.png)
+![example3.3](./images/csf-frankfurt_000000_000294.jpg)
+![example3.4](./images/csf2cs-frankfurt_000000_000294.png)
+
 
 ## Training and Testing
 
