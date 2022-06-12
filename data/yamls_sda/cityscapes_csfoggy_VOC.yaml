@@ -9,29 +9,31 @@
 # Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
 path: /datasdc/zhouhuayi/dataset/domain_adaptation/
 # real train and val images (relative to 'path') of CityScapes, including 2975+500=3475 images
-train_source_real: 
+train_source_real:
   - CityScapes/yolov5_format/images/train
   # - CityScapes/yolov5_format/images/val
 # fake train and val images (relative to 'path') of CityScapes, with target-like images from CityScapesFoggy
-train_source_fake: 
-  - CityScapesFoggy/yolov5_format/images/train
+train_source_fake:
+  - CityScapes/yolov5_format_csf/images/train
+  # - CityScapes/yolov5_format_csf/images/val
+  # - CityScapesFoggy/yolov5_format/images/train
   # - CityScapesFoggy/yolov5_format/images/val
-  
+
 # real train images (relative to 'path') of CityScapesFoggy, including 2975 images, label not used
-train_target_real: 
+train_target_real:
   - CityScapesFoggy/yolov5_format/images/train
   # - CityScapesFoggy/yolov5_format/images/val
 # fake train images (relative to 'path') of CityScapesFoggy, with source-like images from CityScapes, label not used
-train_target_fake: 
-  - CityScapes/yolov5_format/images/train
+train_target_fake:
+  - CityScapesFoggy/yolov5_format_cs/images/train
+  # - CityScapesFoggy/yolov5_format_cs/images/val
+  # - CityScapes/yolov5_format/images/train
   # - CityScapes/yolov5_format/images/val
 
-# real val images (relative to 'path') of CityScapesFoggy, including 500 images, never appear when training 
-test_target_real: 
+# real val images (relative to 'path') of CityScapesFoggy, including 500 images, never appear when training
+test_target_real:
   - CityScapesFoggy/yolov5_format/images/val
 
 # Classes
 nc: 8  # number of classes
 names: [ 'bus', 'bicycle', 'car', 'motorcycle', 'person', 'rider', 'train', 'truck' ]  # class names
-
-
