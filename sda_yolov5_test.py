@@ -266,7 +266,6 @@ def run(data,
         
         ap50, ap = ap[:, 0], ap.mean(1)  # AP@0.5, AP@0.5:0.95
         
-        # mp, mr, map50, map = p.mean(), r.mean(), ap50.mean(), ap.mean()
         mp, mr, map50, map75, map = p.mean(), r.mean(), ap50.mean(), ap75.mean(), ap.mean()  # Added in 2021-10-01
         
         nt = np.bincount(stats[3].astype(np.int64), minlength=nc)  # number of targets per class
@@ -323,7 +322,6 @@ def run(data,
             eval.evaluate()
             eval.accumulate()
             eval.summarize()
-            # map, map50 = eval.stats[:2]  # update results (mAP@0.5:0.95, mAP@0.5)
             map, map50, map75 = eval.stats[:3]  # update results (mAP@0.5:0.95, mAP@0.5)  # Added in 2021-10-01
         except Exception as e:
             print(f'pycocotools unable to run: {e}')
@@ -336,7 +334,7 @@ def run(data,
     maps = np.zeros(nc) + map
     for i, c in enumerate(ap_class):
         maps[c] = ap[i]
-    # return (mp, mr, map50, map, *(loss.cpu() / len(dataloader)).tolist()), maps, t
+
     return (mp, mr, map50, map75, map, *(loss.cpu() / len(dataloader)).tolist()), maps, t  # Added in 2021-10-01
 
 
