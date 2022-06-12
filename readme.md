@@ -54,7 +54,7 @@ $ pip3 install torch*.whl
 
 ## Examples of Input Image
 
-* **PascalVOC(2007+2012)**
+* **PascalVOC → Clipart1k**
 
 <table>
 <tr>
