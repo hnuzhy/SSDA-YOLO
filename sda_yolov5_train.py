@@ -41,7 +41,7 @@ from torch.utils.tensorboard import SummaryWriter
 FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())  # add yolov5/ to path
 
-import sda_yolov5_test as test  # for end-of-epoch mAP
+import umt_yolov5_test as test  # for end-of-epoch mAP
 from models.experimental import attempt_load
 from models.yolo import Model
 
@@ -74,9 +74,11 @@ def train(hyp, opt, device):
         opt.save_dir, opt.epochs, opt.batch_size, opt.weights, opt.single_cls, opt.evolve, opt.data, opt.cfg, \
         opt.resume, opt.notest, opt.nosave, opt.workers
 
-    teacher_alpha, conf_thres, iou_thres, max_gt_boxes, lambda_weight, gamma_weight, confidence, student_weight, teacher_weight = \
-        opt.teacher_alpha, opt.conf_thres, opt.iou_thres, opt.max_gt_boxes, opt.lambda_weight, opt.gamma_weight, opt.confidence, \
+    teacher_alpha, conf_thres, iou_thres, max_gt_boxes, lambda_weight, student_weight, teacher_weight = \
+        opt.teacher_alpha, opt.conf_thres, opt.iou_thres, opt.max_gt_boxes, opt.lambda_weight, \
         opt.student_weight, opt.teacher_weight
+
+    all_shift = opt.consistency_loss
 
     # Directories
     save_dir = Path(save_dir)
@@ -165,7 +167,9 @@ def train(hyp, opt, device):
         state_dict_teacher = ckpt_teacher['ema' if ckpt_teacher.get('ema') else 'model'].float().half().state_dict()  # to FP32
         model_teacher.load_state_dict(state_dict_teacher, strict=False)  # load
         del ckpt_teacher, state_dict_teacher
-    
+        
+        
+ 
     
     # Dataset
     with torch_distributed_zero_first(RANK):
@@ -400,21 +404,39 @@ def train(hyp, opt, device):
         # b = int(random.uniform(0.25 * imgsz, 0.75 * imgsz + gs) // gs * gs)
         # dataset_sr.mosaic_border = [b - imgsz, -b]  # height, width borders
 
-        mloss = torch.zeros(4, device=device)  # mean losses
+        # mloss = torch.zeros(4, device=device)  # mean losses
+        if all_shift:
+            mloss = torch.zeros((4 + all_shift), device=device)  # mean losses
+        else:
+            mloss = torch.zeros(4, device=device)  # mean losses
+        
         # if RANK != -1 and False:  # load dats sequentially in UMT
         if RANK != -1:  # load dats sequentially in UMT
             dataloader_sr.sampler.set_epoch(epoch)  # For DistributedSampler, this will shuffle dataset
             dataloader_tr.sampler.set_epoch(epoch)
+            # dataloader_sr.sampler.set_epoch(epoch+random.random())  # For DistributedSampler, this will shuffle dataset
+            # dataloader_tr.sampler.set_epoch(epoch+random.random())
 
         # pbar = enumerate(dataloader)
         pbar = enumerate([ind for ind in range(nb)])
         # source and target dataset have different images number
         data_iter_sr = iter(dataloader_sr)
         data_iter_tr = iter(dataloader_tr)
-        logger.info(('\n' + '%10s' * 8) % ('Epoch', 'gpu_mem', 'box', 'obj', 'cls', 'total', 'labels', 'img_size'))
+        # logger.info(('\n' + '%10s' * 8) % ('Epoch', 'gpu_mem', 'box', 'obj', 'cls', 'total', 'labels', 'img_size'))
+        if  all_shift:
+            log_list = ['Epoch', 'gpu_mem', 'box', 'obj', 'cls', 'total', 'labels', 'img_size']
+            if opt.consistency_loss: log_list = log_list[:6] + ['cons'] + log_list[6:]
+            shift = opt.consistency_loss
+            # if opt.sem_gcn: log_list = log_list[:6+shift] + ['sem'] + log_list[6+shift:]
+            # shift += opt.sem_gcn
+            logger.info(('\n' + '%10s' * (8 + shift)) % tuple(log_list))
+        else:
+            logger.info(('\n' + '%10s' * 8) % ('Epoch', 'gpu_mem', 'box', 'obj', 'cls', 'total', 'labels', 'img_size'))
+        
         if RANK in [-1, 0]:
             pbar = tqdm(pbar, total=nb)  # progress bar
         student_optimizer.zero_grad()
+        
         # for i, (imgs, targets, paths, _) in pbar:
         for i, ind in pbar:
             # start batch -------------------------------------------------------
@@ -468,9 +490,6 @@ def train(hyp, opt, device):
                 model_student.zero_grad()
                 pred_sr = model_student(imgs_sr)  # forward
                 loss_sr, loss_items_sr = compute_loss(pred_sr, targets_sr.to(device))  # loss scaled by batch_size
-                # if confidence:
-                    # print("[warning] The confidence loss has not been implemented so far...")
-                    # conf_loss = confidence_loss.mean()
  
                 # [branch 2] for model_student, with using labels
                 pred_sf = model_student(imgs_sf)  # forward
@@ -484,7 +503,13 @@ def train(hyp, opt, device):
                 
                 # [branch 4] for model_student, without using labels
                 pred_tr = model_student(imgs_tr)
+                # print(ni, len(pred_tr), pred_tr[0].shape, len(pred_tf_nms), pred_tf_nms[0].shape, pred_tf_nms[0], "\n", 
+                    # imgs_tr.shape, targets_tr.shape, "\n", targets_tr, "\n", paths_tr)
                 per_batch_size, channels, height, width = imgs_tf.shape
+                # print(type(targets_tr), targets_tr.shape, type(targets_tr[0]), 
+                    # targets_tr[0].shape, targets_tr[0].cpu().numpy(), targets_tr[-1].cpu().numpy())
+                # output: <class 'torch.Tensor'> torch.Size([49, 6]) <class 'torch.Tensor'> 
+                    # torch.Size([6]) [0,6,0.91104,0.40758,0.13493,0.2201] [3,4,0.55561,0.9577,0.080059,0.084592]
                 pred_labels_out_batch = []  
                 for img_id in range(per_batch_size):
                     labels_num = pred_tf_nms[img_id].shape[0]  # pred_tf_nms prediction shape is (bs,n,6), per image [xyxy, conf, cls] 
@@ -494,39 +519,40 @@ def train(hyp, opt, device):
                         labels_list[:, 1:5] = xyxy2xywhn(labels_list[:, 1:5], w=width, h=height)  # xyxy to xywh normalized
                         pred_labels_out = torch.cat(((torch.ones(labels_num)*img_id).unsqueeze(-1).to(device), 
                             labels_list), dim=1)  # pred_labels_out shape is (labels_num, 6), per label format [img_id cls x y x y]
+                    # else:
+                        # pred_labels_out = pred_tf_nms[img_id]  # in this condition, pred_tf_nms[img_id] tensor size is [0,6]
+                        '''[BUG] When training, nan can appear in batchnorm when all the values are the same, and thus std = 0'''
+                        # pred_labels_out = torch.from_numpy(np.array([[img_id,0,0,0,0,0]])).to(device)
+                        '''If no bboxes have been detected, we set a [0,0,w,h](xyxy) or [0.5,0.5,1,1](xywh) bounding-box for the image'''
+                        # pred_labels_out = torch.from_numpy(np.array([[img_id,0,0.5,0.5,1,1]])).to(device)
                         pred_labels_out_batch.append(pred_labels_out)
                 if len(pred_labels_out_batch) != 0:
                     pred_labels = torch.cat(pred_labels_out_batch, dim=0)
                 else:
-                    random_label_list = [0,0, 0.5, 0.5, random.uniform(0.2,0.8), random.uniform(0.2,0.8)]
-                    pred_labels = torch.from_numpy(np.array([random_label_list])).to(device)
+                    # pred_labels = torch.from_numpy(np.array([[0,0, 0.5, 0.5, 1, 1]])).to(device)
+                    pred_labels = torch.from_numpy(np.array([[0,0, 0.5, 0.5, random.uniform(0.2,0.8), random.uniform(0.2,0.8)]])).to(device)
                 loss_distillation, loss_items_distillation = compute_loss(pred_tr, pred_labels.to(device))  # loss scaled by batch_size
-                
                 
                 # consistency loss (source_real and source_fake should have similarly outputs)
                 if opt.consistency_loss:
-                    loss_cons = torch.abs(loss_sr - loss_sf) * opt.alpha_weight
-
+                    # loss_cons = torch.abs(loss_sr - loss_sf) * opt.alpha_weight  # L1 loss
+                    loss_cons = torch.abs(loss_sr - loss_sf)**2 * opt.alpha_weight  # L2 loss
 
                 # combine all losses
-                loss = loss_sr + loss_sf + loss_distillation * lambda_weight + torch.Tensor([1e-8]).to(device)  # add this line to avoid nan in training
-                # loss = loss_sr + loss_sf + loss_distillation * lambda_weight
+                loss = loss_sr + loss_sf + loss_distillation * lambda_weight
                 loss_items = loss_items_sr + loss_items_sf + loss_items_distillation * lambda_weight
                 if opt.consistency_loss:
                     loss += loss_cons
                     # print(loss_items.shape, loss_cons.shape)  # torch.Size([4]) torch.Size([1])
-                    loss_items[-1] += loss_cons.detach()[0]
+                    loss_items[3] += loss_cons.detach()[0]  # (lbox, lobj, lcls, total_loss)
+                    loss_items = torch.cat((loss_items, loss_cons.detach()), 0)
                     
                 
                 if RANK != -1:
                     loss *= WORLD_SIZE  # gradient averaged between devices in DDP mode
                 if opt.quad:
                     loss *= 4.
-                
-                # if confidence:
-                    # print("[warning] The confidence loss has not been implemented so far...")
-                    # loss += gamma_weight * conf_loss
-                    
+             
 
             try:
                 # Backward
@@ -548,13 +574,14 @@ def train(hyp, opt, device):
                 print(targets_sr, "\n", paths_sr,  "\n", targets_tr,  "\n", paths_tr)
                 print(pred_tf_nms, "\n", pred_labels, "\n", loss, "\n", loss_items)
                 print("Currently, we have not been able to find the bug. Please resume training from the last running...")
-                continue
+                # continue
+                
                     
             # Print
             if RANK in [-1, 0]:
                 mloss = (mloss * i + loss_items) / (i + 1)  # update mean losses
                 mem = '%.3gG' % (torch.cuda.memory_reserved() / 1E9 if torch.cuda.is_available() else 0)  # (GB)
-                s = ('%10s' * 2 + '%10.4g' * 6) % (
+                s = ('%10s' * 2 + '%10.4g' * (6 + all_shift)) % (
                     f'{epoch}/{epochs - 1}', mem, *mloss, targets_sr.shape[0], imgs_sr.shape[-1])
                 pbar.set_description(s)
 
@@ -610,13 +637,16 @@ def train(hyp, opt, device):
                 # latter 8 values (P, R, mAP@.5, mAP@.75, mAP@.5-.95, val_loss(box, obj, cls))
 
             # Log
-            tags = ['train/box_loss', 'train/obj_loss', 'train/cls_loss',  # train loss
+            # tags = ['train/box_loss', 'train/obj_loss', 'train/cls_loss',  # train loss
+            tags = ['train/box_loss', 'train/obj_loss', 'train/cls_loss', 'train/total_loss', # Added in 2022-04-04
                     # 'metrics/precision', 'metrics/recall', 'metrics/mAP_0.5', 'metrics/mAP_0.5:0.95',
                     'metrics/precision', 'metrics/recall', 'metrics/mAP_0.5', 'metrics/mAP_0.75', 
                     'metrics/mAP_0.5:0.95',  # Added in 2021-10-01
                     'val/box_loss', 'val/obj_loss', 'val/cls_loss',  # val loss
                     'x/lr0', 'x/lr1', 'x/lr2']  # params
-            for x, tag in zip(list(mloss[:-1]) + list(results) + lr, tags):
+            if opt.consistency_loss: tags = tags[:4] + ['train/cons_loss'] + tags[4:] # Added in 2022-04-04
+            # for x, tag in zip(list(mloss[:-1]) + list(results) + lr, tags):
+            for x, tag in zip(list(mloss) + list(results) + lr, tags): # Changed in 2022-04-04
                 if loggers['tb']:
                     loggers['tb'].add_scalar(tag, x, epoch)  # TensorBoard
                 if loggers['wandb']:
@@ -736,20 +766,18 @@ def parse_opt(known=False):
     parser.add_argument('--artifact_alias', type=str, default="latest", help='version of dataset artifact to be used')
     parser.add_argument('--local_rank', type=int, default=-1, help='DDP parameter, do not modify')
     
-    parser.add_argument('--teacher_alpha', type=float, default=0.99, help='Teacher EMA alpha (decay) in MT')
-    parser.add_argument('--conf_thres', type=float, default=0.8, help='Confidence threshold for pseudo label in NMS')
-    parser.add_argument('--iou_thres', type=float, default=0.3, help='Overlap threshold used for non-maximum suppression')
-    parser.add_argument('--max_gt_boxes', type=int, default=20, help='Maximal number of gt rois in an image during training')
-    parser.add_argument('--lambda_weight', type=float, default=0.01, help='The weight for distillation loss')
-    parser.add_argument('--gamma_weight', type=float, default=0.1, help='The weight for confidence loss in UMT')
-    parser.add_argument('--confidence', default=False, help='Whether use the confidence branch to improving training in UMT')
+    parser.add_argument('--teacher_alpha', type=float, default=0.99, help='Teacher EMA alpha (decay) in UMT')
+    parser.add_argument('--conf_thres', type=float, default=0.5, help='Confidence threshold for pseudo label in UMT')
+    parser.add_argument('--iou_thres', type=float, default=0.3, help='Overlap threshold used for non-maximum suppression in UMT')
+    parser.add_argument('--max_gt_boxes', type=int, default=20, help='Maximal number of gt rois in an image during training in UMT')
+    parser.add_argument('--lambda_weight', type=float, default=0.005, help='The weight for distillation loss in UMT')
     
-    parser.add_argument('--consistency_loss', default=True, help='Whether use the consistency loss to improving training (newly added)')
-    parser.add_argument('--alpha_weight', type=float, default=0.01, help='The weight for the consistency loss (newly added)')
+    parser.add_argument('--consistency_loss', action='store_true', help='Whether use the consistency loss (newly added)')
+    parser.add_argument('--alpha_weight', type=float, default=2.0, help='The weight for the consistency loss (newly added)')
     
-    parser.add_argument('--student_weight', type=str, default='None', help='Resuming weights path of student model')
-    parser.add_argument('--teacher_weight', type=str, default='None', help='Resuming weights path of teacher model')
-    parser.add_argument('--save_dir', type=str, default='None', help='Resuming project path')
+    parser.add_argument('--student_weight', type=str, default='None', help='Resuming weights path of student model in UMT')
+    parser.add_argument('--teacher_weight', type=str, default='None', help='Resuming weights path of teacher model in UMT')
+    parser.add_argument('--save_dir', type=str, default='None', help='Resuming project path in UMT')
     opt = parser.parse_known_args()[0] if known else parser.parse_args()
     return opt
 
@@ -801,4 +829,3 @@ def main(opt):
 if __name__ == "__main__":
     opt = parse_opt()
     main(opt)
-
