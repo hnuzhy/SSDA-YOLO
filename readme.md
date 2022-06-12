@@ -55,16 +55,38 @@ $ pip3 install torch*.whl
 ## Examples of Input Image
 
 * **PascalVOC(2007+2012)**
-![example2.1](./images/voc-000021.jpg)
-![example2.2](./images/voc2clipart-000021.jpg)
-![example2.3](./images/clipart-5515950.jpg)
-![example2.4](./images/clipart2voc-5515950.jpg)
+
+<table>
+<tr>
+<th>[source real] VOC</th>
+<th>[source fake] VOC2Clipart</th>
+<th>[target real] Clipart</th>
+<th>[target fake] Clipart2VOC</th>
+</tr>
+<tr>
+<td><img src="./images/voc-000021.jpg" height="360"></td>
+<td><img src="./images/voc2clipart-000021.jpg" height="360"></td> 
+<td><img src="./images/clipart-5515950.jpg" height="360"></td>
+<td><img src="./images/clipart2voc-5515950.jpg" height="360"></td>
+</tr>
+</table>
 
 * **CityScapes → CityScapes Foggy**
-![example3.1](./images/cs-frankfurt_000000_000294.jpg)
-![example3.2](./images/cs2csf-frankfurt_000000_000294.png)
-![example3.3](./images/csf-frankfurt_000000_000294.jpg)
-![example3.4](./images/csf2cs-frankfurt_000000_000294.png)
+
+<table>
+<tr>
+<th>[source real] City Scapes</th>
+<th>[source fake] CS2CSF</th>
+<th>[target real] CityScapes Foggy</th>
+<th>[target fake] CSF2CS</th>
+</tr>
+<tr>
+<td><img src="./images/cs-frankfurt_000000_000294.jpg" height="360"></td>
+<td><img src="./images/cs2csf-frankfurt_000000_000294.png" height="360"></td> 
+<td><img src="./images/csf-frankfurt_000000_000294.jpg" height="360"></td>
+<td><img src="./images/csf2cs-frankfurt_000000_000294.png" height="360"></td>
+</tr>
+</table>
 
 
 ## Training and Testing
