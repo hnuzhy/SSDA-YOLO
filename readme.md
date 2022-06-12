@@ -77,7 +77,8 @@ python -m torch.distributed.launch --nproc_per_node 4 \
   --weights weights/yolov5l.pt \
   --data yamls_sda/pascalvoc0712_clipart1k_VOC.yaml \
   --name voc2clipart_ssda_960_yolov5l \
-  --img 960 --device 0,1,2,3 --batch-size 24 --epochs 100
+  --img 960 --device 0,1,2,3 --batch-size 24 --epochs 200 \
+  --lambda_weight 0.005 --consistency_loss --alpha_weight 2.0
 ```
 
 If you want to resume a breakout training, following the script below.
@@ -89,7 +90,8 @@ python -m torch.distributed.launch --nproc_per_node 4 -master_port 12345 \
   --name voc2clipart_ssda_960_yolov5l_R \
   --student_weight runs/train/voc2clipart_ssda_960_yolov5l/weights/best_student.pt \
   --teacher_weight runs/train/voc2clipart_ssda_960_yolov5l/weights/best_teacher.pt \
-  --img 960 --device 0,1,2,3 --batch-size 24 --epochs 100
+  --img 960 --device 0,1,2,3 --batch-size 24 --epochs 200 \
+  --lambda_weight 0.005 --consistency_loss --alpha_weight 2.0
 ```
 
 * **Testing**
