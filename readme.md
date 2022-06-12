@@ -81,10 +81,10 @@ $ pip3 install torch*.whl
 <th>[target fake] CSF2CS</th>
 </tr>
 <tr>
-<td><img src="./images/cs-frankfurt_000000_000294.jpg" height="240"></td>
-<td><img src="./images/cs2csf-frankfurt_000000_000294.png" height="240"></td> 
-<td><img src="./images/csf-frankfurt_000000_000294.jpg" height="240"></td>
-<td><img src="./images/csf2cs-frankfurt_000000_000294.png" height="240"></td>
+<td><img src="./images/cs-frankfurt_000000_000294.jpg" height="180"></td>
+<td><img src="./images/cs2csf-frankfurt_000000_000294.png" height="180"></td> 
+<td><img src="./images/csf-frankfurt_000000_000294.jpg" height="180"></td>
+<td><img src="./images/csf2cs-frankfurt_000000_000294.png" height="180"></td>
 </tr>
 </table>
 
