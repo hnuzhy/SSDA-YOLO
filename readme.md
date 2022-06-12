@@ -1,9 +1,9 @@
 # SSDA-YOLO
-Codes for my paper "SSDA-YOLO: Semi-supervised Domain Adaptive YOLO for Cross-Domain Object Detection" for journal SPL (under review)
+Codes for my paper "SSDA-YOLO: Semi-supervised Domain Adaptive YOLO for Cross-Domain Object Detection" submitted to journal *Neurocomputing* (under review)
 
 ## Abstarct
 
-*The cross-domain discrepancy has always been what domain adaptive object detection aims to alleviate. This problem is more prominent when a significant distribution difference appearing between the source data used for training and the target data from the real application scenario. In this paper, we propose a novel semi-supervised domain adaptive YOLO (SDA-YOLO) method to improve cross-domain detection performance by integrating the efficient YOLOv5. Specifically, we adapt knowledge distillation to assist the student model obtain the instance-level features in the unlabeled target domain. We also draw support from style transfer to cross-generate pseudo images in different domains for remedying the image-level differences. We evaluate our proposed SDA-YOLO on public benchmarks including PascalVOC, Clipart1k, Cityscapes, and Foggy Cityscapes. Moreover, the experimental details on the yawning detection dataset collected in various schools and classrooms are also reported. The final results show the impressive improvement of our method in cross-domain obejct detection task.*
+*Domain adaptive object detection (DAOD) aims to alleviate transfer performance degradation caused by the cross-domain discrepancy. It is prominent when a distinct divergence arising between the source and target scenarios. However, most existing DAOD methods are dominated by computationally intensive two-stage detectors. In this paper, we propose a novel semi-supervised domain adaptive YOLO (SSDA-YOLO) based method to improve cross-domain detection performance by integrating the compact one-stage detector YOLOv5. Specifically, we adapt the knowledge distillation framework with the Mean Teacher model to assist the student model in obtaining instance-level features of the unlabeled target domain. We also utilize the scene style transfer to cross-generate pseudo images in different domains for remedying image-level differences. In addition, an intuitive consistency loss is proposed to further align cross-domain predictions. We evaluate our proposed SSDA-YOLO on public benchmarks including PascalVOC, Clipart1k, Cityscapes, and Foggy Cityscapes. Moreover, to verify its generalization, we conduct experiments on self-made yawning detection datasets collected from various classrooms. The final results show considerable improvements of our method in these DAOD tasks.*
 
 ## Brief Description
 
@@ -11,14 +11,14 @@ SSDA-YOLO is designed for domain adaptative cross-domain object detection based 
 
 ![example1](./images/figure1.png)
 
-So far, we have trained and evaluated it on two adaptation tasks: **PascalVOC → Clipart1k**, **CityScapes → CityScapes Foggy**.
+So far, we have trained and evaluated it on two pubilc available transfer tasks: **PascalVOC→Clipart1k** and **CityScapes→CityScapes Foggy**.
 
 ## Installation
 
 **Environment:** Anaconda, Python3.8, PyTorch1.10.0(CUDA11.2), wandb
 
 ```bash
-$ git clone https://github.com/hnuzhy/SDA-YOLO.git
+$ git clone https://github.com/hnuzhy/SSDA-YOLO.git
 $ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # Codes are only evaluated on GTX3090+CUDA11.2+PyTorch1.10.0. You can follow the same config if needed
@@ -47,7 +47,8 @@ $ pip3 install torch*.whl
 
 * **CityScapes**: Download from the official [website](https://www.cityscapes-dataset.com/downloads/). Images ***leftImg8bit_trainvaltest.zip (11GB) [md5]***; Annotations ***gtFine_trainvaltest.zip (241MB) [md5]***.
 * **CityScapes Foggy**: Download from the official [website](https://www.cityscapes-dataset.com/downloads/). Images ***leftImg8bit_trainval_foggyDBF.zip (20GB) [md5]***; Annotations are the same with `CityScapes`. Note, we chose foggy images with `beta=0.02` out of three kind of choices `(0.01, 0.02, 0.005)`.
-* **Normal-style → Foggy-style** and **Foggy-style → Normal-style**: We taked target domain images as fake source images and vice versa. 
+* **Normal-style → Foggy-style**: We trained a new image style transfer model based on [CUT(ECCV2020)](https://github.com/taesungp/contrastive-unpaired-translation). The generated Foggy-style fake CityScapes images will be uploaded.
+* **Foggy-style → Normal-style**: We trained a new image style transfer model based on [CUT(ECCV2020)](https://github.com/taesungp/contrastive-unpaired-translation). The generated Normal-style fake CityScapes Foggy images will be uploaded.
 * **VOC foramt → YOLOv5 format**: Follow the script [convert_CitySpaces_yolo_label.py](./data/formats/convert_CitySpaces_yolo_label.py) and [convert_CitySpacesFoggy_yolo_label.py](./data/formats/convert_CitySpacesFoggy_yolo_label.py)
 
 
