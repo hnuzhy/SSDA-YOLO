@@ -153,3 +153,13 @@ python ssda_yolov5_test.py --data yamls_sda/pascalvoc0712_clipart1k_VOC.yaml \
 * [UMT(A Pytorch Implementation of Unbiased Mean Teacher for Cross-domain Object Detection (CVPR 2021))](https://github.com/kinredon/umt)
 * [CUT - Contrastive unpaired image-to-image translation, faster and lighter training than cyclegan (ECCV 2020, in PyTorch)](https://github.com/taesungp/contrastive-unpaired-translation)
 
+## Citation
+
+```
+@article{zhou2022ssda-yolo,
+  title={SSDA-YOLO: Semi-supervised Domain Adaptive YOLO for Cross-Domain Object Detection},
+  author={Zhou, Huayi and Jiang, Fei and Lu, Hongtao},
+  journal={arXiv preprint arXiv:2211.02213},
+  year={2022}
+}
+```
