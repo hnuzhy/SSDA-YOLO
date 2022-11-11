@@ -41,7 +41,7 @@ from torch.utils.tensorboard import SummaryWriter
 FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())  # add yolov5/ to path
 
-import umt_yolov5_test as test  # for end-of-epoch mAP
+import ssda_yolov5_test as test  # for end-of-epoch mAP
 from models.experimental import attempt_load
 from models.yolo import Model
 
