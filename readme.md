@@ -113,8 +113,8 @@ names: class names list.
 * **Training**
 
 Still taking **PascalVOC → Clipart1k** as an example. The pretrained model `yolov5l.pt` can be downloaded from the official YOLOv5 website.
-**NOTE:** The version of YOLOv5 that we used is 5.0, weights from other versions may be not matched.
-pretrained model urls of [yolov5s, yolov5m, yolov5l, yolov5x]
+
+**NOTE:** The version of YOLOv5 that we used is 5.0, weights from other versions may be not matched. The pretrained model urls of [yolov5s, yolov5m, yolov5l, yolov5x]
 * https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5s.pt
 * https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5m.pt
 * https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5l.pt
