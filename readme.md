@@ -1,5 +1,5 @@
 # SSDA-YOLO
-Codes for my paper "[SSDA-YOLO: Semi-supervised Domain Adaptive YOLO for Cross-Domain Object Detection](https://arxiv.org/abs/2211.02213v2)" submitted to journal *Computer Vision and Image Understanding* (under review)
+Codes for my paper "[SSDA-YOLO: Semi-supervised Domain Adaptive YOLO for Cross-Domain Object Detection](https://arxiv.org/abs/2211.02213v2)" submitted to journal *Computer Vision and Image Understanding* (accepted)
 
 ## Abstarct
 
