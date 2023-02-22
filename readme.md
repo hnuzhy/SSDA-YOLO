@@ -169,4 +169,15 @@ python ssda_yolov5_test.py --data yamls_sda/pascalvoc0712_clipart1k_VOC.yaml \
   journal={arXiv preprint arXiv:2211.02213},
   year={2022}
 }
+
+or
+
+@article{zhou2023ssda,
+  title={SSDA-YOLO: Semi-supervised domain adaptive YOLO for cross-domain object detection},
+  author={Zhou, Huayi and Jiang, Fei and Lu, Hongtao},
+  journal={Computer Vision and Image Understanding},
+  pages={103649},
+  year={2023},
+  publisher={Elsevier}
+}
 ```
