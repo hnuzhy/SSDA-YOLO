@@ -47,8 +47,8 @@ $ pip3 install torch*.whl
 
 * **CityScapes**: Download from the official [website](https://www.cityscapes-dataset.com/downloads/). Images ***leftImg8bit_trainvaltest.zip (11GB) [md5]***; Annotations ***gtFine_trainvaltest.zip (241MB) [md5]***.
 * **CityScapes Foggy**: Download from the official [website](https://www.cityscapes-dataset.com/downloads/). Images ***leftImg8bit_trainval_foggyDBF.zip (20GB) [md5]***; Annotations are the same with `CityScapes`. Note, we chose foggy images with `beta=0.02` out of three kind of choices `(0.01, 0.02, 0.005)`.
-* **Normal-style → Foggy-style**: We trained a new image style transfer model based on [CUT(ECCV2020)](https://github.com/taesungp/contrastive-unpaired-translation). The generated Foggy-style fake CityScapes images has been uploaded to [google drive](https://drive.google.com/file/d/1MPwfbpYYT3UkuPvuX6XgcYk8DdmdrT_o/view?usp=share_link).
-* **Foggy-style → Normal-style**: We trained a new image style transfer model based on [CUT(ECCV2020)](https://github.com/taesungp/contrastive-unpaired-translation). The generated Normal-style fake CityScapes Foggy images will has been uploaded to [google drive](https://drive.google.com/file/d/1q0L6ai85r_MOMuwPIKIhhh6uqOudt7VD/view?usp=share_link).
+* **Normal-style → Foggy-style**: We trained a new image style transfer model based on [CUT(ECCV2020)](https://github.com/taesungp/contrastive-unpaired-translation). The generated Foggy-style fake CityScapes images have been uploaded to [google drive](https://drive.google.com/file/d/1MPwfbpYYT3UkuPvuX6XgcYk8DdmdrT_o/view?usp=share_link).
+* **Foggy-style → Normal-style**: We trained a new image style transfer model based on [CUT(ECCV2020)](https://github.com/taesungp/contrastive-unpaired-translation). The generated Normal-style fake CityScapes Foggy images have been uploaded to [google drive](https://drive.google.com/file/d/1q0L6ai85r_MOMuwPIKIhhh6uqOudt7VD/view?usp=share_link).
 * **VOC foramt → YOLOv5 format**: Follow the script [convert_CitySpaces_yolo_label.py](./data/formats/convert_CitySpaces_yolo_label.py) and [convert_CitySpacesFoggy_yolo_label.py](./data/formats/convert_CitySpacesFoggy_yolo_label.py)
 
 
